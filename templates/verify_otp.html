@@ -1,0 +1,39 @@
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white text-center">
+                    <h4>Verify Your Email</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-center">We have sent an OTP to your email: <strong>{{ email }}</strong></p>
+                    <p class="text-center text-muted">Please enter the 6-digit OTP to verify your email address.</p>
+                    
+                    <form method="POST" action="{% url 'verify_otp' email=email %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="otp" class="form-label">Enter OTP</label>
+                            <input type="text" class="form-control" id="otp" name="otp" 
+                                   pattern="[0-9]{6}" maxlength="6" required
+                                   placeholder="Enter 6-digit OTP">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success">Verify OTP</button>
+                            <a href="{% url 'signup' %}" class="btn btn-outline-secondary">Back to Sign Up</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-focus on OTP input
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('otp').focus();
+    });
+</script>
+{% endblock %} 

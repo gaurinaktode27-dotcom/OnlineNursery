@@ -1,0 +1,57 @@
+{% extends 'headerfooter.html' %}
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white text-center">
+                    <h4>Complete Your Payment</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <h5>Order Amount: ₹{{ payment.amount|div:100 }}</h5>
+                    </div>
+                    <form action="{% url 'payment_success' %}" method="POST">
+                        {% csrf_token %}
+                        <script
+                            src="https://checkout.razorpay.com/v1/checkout.js"
+                            data-key="{{ razorpay_key_id }}"
+                            data-amount="{{ payment.amount }}"
+                            data-currency="INR"
+                            data-order_id="{{ payment.id }}"
+                            data-buttontext="Pay Now"
+                            data-name="Online Nursery"
+                            data-description="Purchase from Online Nursery"
+                            data-image="https://your-logo-url.com/logo.png"
+                            data-prefill.name="{{ request.user.get_full_name }}"
+                            data-prefill.email="{{ request.user.email }}"
+                            data-theme.color="#0c9c73"
+                            data-callback_url="{% url 'payment_success' %}"
+                        ></script>
+                        <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+                        <input type="hidden" name="razorpay_order_id" value="{{ payment.id }}">
+                        <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add handler for Razorpay response
+        window.Razorpay = {
+            onSuccess: function(response) {
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                document.querySelector('form').submit();
+            },
+            onError: function(response) {
+                alert('Payment failed. Please try again.');
+                window.location.href = "{% url 'checkout' %}";
+            }
+        };
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "headerfooter.html" %}
+{% block content %}
+
+<!-- Alert Messages -->
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Blog Section -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="color: #0c9c73; font-weight: 700;">Our Latest Blogs</h2>
+
+    <!-- Create Blog Button -->
+    <div class="d-flex justify-content-end mb-4">
+        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#createBlogModal"
+            style="border-radius: 30px; padding: 10px 25px; border: 2px solid #0c9c73; color: #0c9c73; font-weight: 600; transition: 0.3s; background: transparent;"
+            onmouseover="this.style.backgroundColor='#0c9c73'; this.style.color='white';"
+            onmouseout="this.style.backgroundColor='transparent'; this.style.color='#0c9c73';">
+            + Create Blog
+        </button>
+    </div>
+
+    <!-- Blog Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for blog in blogs %}
+        <div class="col">
+            <div class="card shadow-sm h-100" style="border-radius: 15px; transition: transform 0.3s;">
+                {% if blog.image %}
+                <img src="{{ blog.image.url }}" class="card-img-top" alt="Blog Image"
+                    style="height: 200px; object-fit: cover; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <h5 style="color: #0c9c73; font-weight: 700;">{{ blog.title }}</h5>
+                        <p style="font-size: 14px; color: #6c757d;">
+                            By {{ blog.author }} | {{ blog.created_at|date:"F d, Y" }}
+                        </p>
+                        <p style="font-size: 14px; color: #444;">
+                            {% if blog.content|length > 80 %}
+                                {{ blog.content|slice:":80" }}...
+                                <a href="#" onclick="openBlogDetails('{{ blog.id }}')" style="color: #0c9c73;">Read more</a>
+                            {% else %}
+                                {{ blog.content }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="text-end">
+                        <button class="btn btn-sm" onclick="openBlogDetails('{{ blog.id }}')"
+                            style="background-color: #0c9c73; color: white; border-radius: 20px; font-size: 13px; padding: 6px 14px; border: none;">
+                            Read More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Modal -->
+        <div id="blogDetails{{ blog.id }}" class="blog-details-modal"
+            style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 600px;
+                max-height: 90vh; overflow-y: auto; z-index: 1050; box-shadow: 0 0 20px rgba(0,0,0,0.3);">
+            <h4 class="text-center" style="color: #0c9c73; font-weight: 700;">{{ blog.title }}</h4>
+
+            {% if blog.image %}
+            <div class="text-center my-3">
+                <img src="{{ blog.image.url }}" class="img-fluid" alt="Blog Image"
+                    style="border-radius: 10px; max-height: 250px; object-fit: cover;">
+            </div>
+            {% endif %}
+
+            <p class="text-muted text-center" style="font-size: 13px;">
+                <strong>By {{ blog.author }} | {{ blog.created_at|date:"F d, Y" }}</strong>
+            </p>
+
+            <p style="font-size: 15px; line-height: 1.6; text-align: justify; color: #444;">{{ blog.content }}</p>
+
+            <div class="d-flex justify-content-between mt-4">
+                <button onclick="closeBlogDetails('{{ blog.id }}')" class="btn btn-outline-danger"
+                    style="border-radius: 20px; font-size: 13px; padding: 5px 15px;">Close</button>
+
+                {% if user.is_superuser %}
+                <form method="post" action="{% url 'delete_blog' blog.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger"
+                        style="border-radius: 20px; font-size: 13px; padding: 5px 15px;">Delete</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Create Blog Modal -->
+<div class="modal fade" id="createBlogModal" tabindex="-1" aria-labelledby="createBlogModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Blog</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" action="{% url 'create_blog' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input type="text" name="title" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Author</label>
+                        <input type="text" name="author" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Content</label>
+                        <textarea name="content" rows="4" class="form-control" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Image</label>
+                        <input type="file" name="image" class="form-control">
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success">Publish</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal JS -->
+<script>
+    function openBlogDetails(blogId) {
+        document.getElementById('blogDetails' + blogId).style.display = 'block';
+    }
+    function closeBlogDetails(blogId) {
+        document.getElementById('blogDetails' + blogId).style.display = 'none';
+    }
+</script>
+
+{% endblock %}

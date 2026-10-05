@@ -1,0 +1,221 @@
+{% extends "headerfooter.html" %}
+{% block content %}
+
+<style>
+    .delivery-info {
+        font-size: 0.9rem;
+    }
+    .delivery-info i {
+        margin-right: 8px;
+    }
+    .delivery-info p {
+        color: #666;
+    }
+</style>
+
+<section class="mt-8">
+    <div class="container">
+        <div class="row">
+            <!-- Product Image Section -->
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="product" id="product">
+                    <div class="slick-slider slick-initialized" dir="ltr">
+                        <div class="slick-list">
+                            <div class="slick-track" style="width: 100%; opacity: 1; display: flex; justify-content: center;">
+                                <div class="slick-slide slick-active slick-current" style="max-width: 100%;">
+                                    <div class="product productModal" id="productModal">
+                                        <div class="zoom d-flex justify-content-center align-items-center">
+                                           <img src="{{ product.img.url }}" alt="{{ product.pname }}"
+                                        class="product-image img-fluid"
+                                         style="max-width: 100%; height: 50%;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Thumbnails -->
+                    <div class="product-tools">
+                        <div id="productModalThumbnails" class="thumbnails g-3 row">
+                            <div class="col-3 thumbnails-img"><img src="/images/products/product-single-img-1.jpg" alt="" class="img-fluid"></div>
+                            <div class="col-3 thumbnails-img"><img src="/images/products/product-single-img-2.jpg" alt="" class="img-fluid"></div>
+                            <div class="col-3 thumbnails-img"><img src="/images/products/product-single-img-3.jpg" alt="" class="img-fluid"></div>
+                            <div class="col-3 thumbnails-img"><img src="/images/products/product-single-img-4.jpg" alt="" class="img-fluid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Product Details Section -->
+            <div class="col-lg-6 col-md-6 col-12 mt-4 mt-md-0">
+                <div class="px-md-3">
+                    <!-- Product Title -->
+                    <h1 class="h3 font-weight-bold text-dark mb-2">{{product.pname}}</h1>
+                    <!-- Product Price -->
+                    <div class="h4 font-weight-bold text-success mb-3">Rs. {{product.price}}</div>
+                    <hr>
+                    <!-- Quantity Selector -->
+                    <div class="mb-3">
+                        <label class="form-label">Quantity:</label>
+                        <div class="input-group" style="max-width: 150px;">
+                            <button class="btn btn-outline-secondary" type="button" id="decrement">-</button>
+                            <input type="number" class="form-control text-center" id="quantity" value="1" min="1" max="{{product.stockqty}}">
+                            <button class="btn btn-outline-secondary" type="button" id="increment">+</button>
+                        </div>
+                    </div>
+                    <!-- Buy Now Button -->
+                    {% if user.is_authenticated %}
+                        <div class="mt-3">
+                            <button type="button" id="buyNow" class="btn btn-success px-4 py-2 rounded-pill text-white">Buy Now</button>
+                            <button type="button" id="addToCart" class="btn btn-outline-success px-4 py-2 rounded-pill">Add to Cart</button>
+                        </div>
+                    {% else %}
+                        <div class="mt-3">
+                            <a href="{% url 'login' %}" class="btn btn-success px-4 py-2 rounded-pill text-white">Buy Now</a>
+                            <a href="{% url 'login' %}" class="btn btn-outline-success px-4 py-2 rounded-pill">Add to Cart</a>
+                        </div>
+                    {% endif %}
+                    <hr>
+                    <!-- Product Info Table -->
+                    <table class="table table-borderless mt-3">
+                        <tbody>
+                            <tr>
+                                <td class="font-weight-bold text-secondary">Product Code:</td>
+                                <td>{{product.id}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold text-secondary">Availability:</td>
+                                <td>{{product.stockqty}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold text-secondary">Type:</td>
+                                <td>{{product.category}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold text-secondary">Delivery:</td>
+                                <td>
+                                    <div class="delivery-info">
+                                        <p class="mb-1"><i class="fas fa-truck text-success"></i> Standard Delivery: 1-2 business weeks</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- detail -->
+<section class="mt-lg-14 mt-8">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2>Product Details</h2>
+                <div class="tab-content">
+                    <div role="tabpanel" id="left-tabs-example-tabpane-product-details"
+                        aria-labelledby="left-tabs-example-tab-product-details" class="fade tab-pane active show">
+                        <div>
+                            <div class="my-8">
+                                <div class="mb-5">
+                                    <h4 class="mb-1">Description</h4>
+                                    <p class="mb-0">{{product.description}}</p>
+                                </div>
+                                <div class="mb-5">
+                                    <h5 class="mb-1">Careing Tips</h5>
+                                    <p class="mb-0">{{product.care}}</p>
+                                </div>
+                                <div class="mb-5">
+                                    <h5 class="mb-1">Watering Plants After Every:</h5>
+                                    <p class="mb-0">{{product.water}}</p>
+                                </div>
+                                <div class="mb-5">
+                                    <h5 class="mb-1">Give the fertilizer After Every:</h5>
+                                    <p class="mb-0">{{product.fertilizer}} months</p>
+                                </div>
+                                <div class="mb-5">
+                                    <h5 class="mb-1">Soil:</h5>
+                                    <p class="mb-0">{{product.soil}} years</p>
+                                </div>
+                                <div>
+                                    <h5 class="mb-1">Sunlight</h5>
+                                    <p class="mb-0">{{product.sun}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content%}
+
+{% block js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const quantityInput = document.getElementById('quantity');
+        const incrementBtn = document.getElementById('increment');
+        const decrementBtn = document.getElementById('decrement');
+        const addToCartBtn = document.getElementById('addToCart');
+        const buyNowBtn = document.getElementById('buyNow');
+        const maxQuantity = parseInt('{{ product.stockqty }}');
+        const productId = '{{ product.id }}';
+        const productName = '{{ product.pname }}';
+        const productPrice = parseFloat('{{ product.price }}');
+
+        // Handle quantity increment/decrement
+        incrementBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            if (value < maxQuantity) {
+                quantityInput.value = value + 1;
+            }
+        });
+
+        decrementBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+            }
+        });
+
+        // Handle Buy Now button click
+        buyNowBtn.addEventListener('click', function() {
+            const quantity = parseInt(quantityInput.value);
+            const item = {
+                [productId]: [quantity, productName, productPrice, maxQuantity, productId]
+            };
+            const totalAmount = productPrice * quantity;
+            
+            // Redirect to checkout with the single item
+            window.location.href = `/checkout/?cart=${encodeURIComponent(JSON.stringify(item))}&amount=${totalAmount}`;
+        });
+
+        // Handle Add to Cart button click
+        addToCartBtn.addEventListener('click', function() {
+            const quantity = parseInt(quantityInput.value);
+            let cart = JSON.parse(localStorage.getItem('cart') || '{}');
+            
+            if (cart[productId]) {
+                cart[productId][0] += quantity;
+            } else {
+                cart[productId] = [quantity, productName, productPrice, maxQuantity, productId];
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Update cart count
+            let sum = 0;
+            for (let item in cart) {
+                sum += cart[item][0];
+            }
+            $('#cart').text(sum);
+            
+            // Show success message
+            alert('Product added to cart successfully!');
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,9 @@
+# .vercelignore
+
+db.sqlite3
+debug.log
+media/
+staticfiles/
+*.log
+*.pyc
+*.sqlite3

@@ -1,0 +1,79 @@
+{% extends "headerfooter.html" %}
+{% block content %}
+
+<div class="container">
+  <div class="row">
+      <div class="mb-6 col-12">
+      </div>
+  </div>
+  <br> <br>
+{% for category, products in categorized_products.items %}
+<br>
+    <h3 style="font-size: 30px; font-weight: bold; color: #0c9c73; text-transform: uppercase; letter-spacing: 1px; text-align: center; padding: 15px; display: block;">
+        {{ category }}
+    </h3>  <br>
+  <div class="g-4 row row-cols-lg-5 row-cols-md-3 row-cols-2">
+    {% for i in products %}
+    <div class="col">
+        <div class="card-product card shadow-sm" style="width: 100%; height: 370px; display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; transition: transform 0.3s ease;">
+            <div class="card-body d-flex flex-column justify-content-between flex-grow-1">
+                <div class="text-center position-relative">
+                    <a href="{% url 'product' i.pid %}">
+    <img src="{{ i.img.url }}"
+         alt="{{ i.pname }}"
+         class="mb-3 img-fluid"
+         style="height: 160px; width: 100%; object-fit: cover; border-radius: 10px;">
+</a>
+                </div>
+
+                <div class="text-small mb-1">
+                    <a class="text-decoration-none text-muted" href="#" 
+                        style="color: #6c757d; font-size: 14px;">
+                        <small id="dbid">{{ i.pid }}</small>
+                        <small>{{ i.category }}</small>
+                    </a>
+                </div>
+
+                <h2 id="namepr{{i.pid}}" class="fs-6" style="font-size: 16px; font-weight: 600; margin-bottom: 5px; color: #333;">
+                    {% if i.pname|wordcount > 20 %}
+                        {{ i.pname|slice:":10"|join:" " }}...
+                    {% else %}
+                        {{ i.pname }}
+                    {% endif %}
+                </h2>
+                <p style="visibility: hidden; display:none;" id="qty{{i.pid}}" name="qty{{i.pid}}">{{i.stockqty}} </p>
+
+                <p class="card-text" style="font-size: 14px; color: #6c757d; margin-bottom: 10px; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;">
+                    {% if i.description|wordcount > 5 %}
+                        {{ i.description|slice:":10"|join:" " }}... 
+                        <a href="/product/{{i.pid}}" id="qv{{i.pid}}" style="text-decoration: none; color: #0c9c73; font-weight: 500;">Read more</a>
+                    {% else %}
+                        {{ i.description }}
+                    {% endif %}
+                </p>
+
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div style="font-size: 16px; font-weight: bold; color: #212529;" id="price{{i.pid}}">
+                        Rs. {{ i.price }}
+                    </div>
+                    <div class="d-flex gap-2">
+                        <span id="divpr{{i.pid}}" class="divpr">
+                            <button class="btn cart" id="pr{{i.pid}}"
+                                style="padding: 8px 14px; font-size: 12px; border-radius: 20px; background-color: #0c9c73; color: white; border: 2px solid #0c9c73; transition: 0.3s ease;"
+                                onmouseover="this.style.backgroundColor='white'; this.style.color='#0c9c73'; this.style.borderColor='#0c9c73';" 
+                                onmouseout="this.style.backgroundColor='#0c9c73'; this.style.color='white'; this.style.borderColor='#0c9c73';">
+                                Add to Cart
+                            </button>
+                        </span>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

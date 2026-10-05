@@ -1,0 +1,310 @@
+{% extends "headerfooter.html" %}
+{% block content %}
+
+<!-- Header Start -->
+<header>
+    <div class="px-3 py-2 border-bottom mb-3 bg-light">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <!-- Dropdown Menu -->
+                <div class="dropdown me-5">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        aria-expanded="false">Plants</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Indoor Plants">Indoor Plants</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Outdoor Plants">Outdoor Plants</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Floating Plants">Floating Plant</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Air Purifing Plants">Air Purifing Plant</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Climbing Plants">Climbing Plant</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Hanging Plants">Hanging Plant</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Seasonal Plants">Seasonal Plant</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Fruit/ Vegitable Plants">Fruit/ Vegitable Plant</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Water Plant">Water Plant</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown me-5">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        aria-expanded="false">Plant Health</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Soil">Soil</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Fertilizer">Fertilizer</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Organic Fertilizer">Organic Fertilizer</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Weed Killer">Weed Killer</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown  me-5">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        aria-expanded="false">Tools/Equipment</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Gardening Tools">Gardening Tools</a></li>
+                        <li><a class="dropdown-item" href="{% url 'viewproduct' %}?category=Pots">Pots</a></li>
+                    </ul>
+                </div>
+
+                <!-- Search Form -->
+                <form class="d-none d-md-flex flex-grow-1 mx-3" role="search" action="{% url 'viewproduct' %}">
+                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search" id="search" name="search">
+                </form>
+
+                <!-- Buttons and User Info -->
+                <div class="text-end d-flex align-items-center flex-wrap">
+                    {% if user.is_authenticated %}
+                    <p class="mb-0 me-3 text-dark">Welcome! {{ user.first_name }}</p>
+                    <a href="{% url 'profile' %}" style="text-decoration: none;">
+                        <button type="button" class="btn btn-outline-success" 
+                            style="color: #0c9c73; border-color: #0c9c73; border-radius: 25px; padding: 10px 20px; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: bold;" 
+                            onmouseover="this.style.color='white'; this.style.backgroundColor='#0c9c73';" 
+                            onmouseout="this.style.color='#0c9c73'; this.style.backgroundColor='transparent';">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path>
+                            </svg>
+                            Profile
+                        </button>
+                    </a>                    
+                    {% else %}
+                    <div class="text-bg-light p-2 text-end w-100 text-md-start mb-2 me-2 d-flex align-items-center justify-content-between" style="display: flex; gap: 10px;">
+                        <span>Please Login / Sign up first!!</span>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'login' %}" style="text-decoration: none;">
+                                <button type="button" class="btn btn-outline-success" 
+                                    style="color: #0c9c73; border-color: #0c9c73; border-radius: 25px; padding: 10px 20px; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: bold;" 
+                                    onmouseover="this.style.color='white'; this.style.backgroundColor='#0c9c73';" 
+                                    onmouseout="this.style.color='#0c9c73'; this.style.backgroundColor='transparent';">
+                                    
+                                    Login
+                                </button>
+                            </a>
+                            <a href="{% url 'signup' %}" style="text-decoration:none">
+                                <button type="button" class="btn btn-outline-success" 
+                                    style="color: #0c9c73; border-color: #0c9c73; border-radius: 25px; padding: 10px 20px; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: bold;" 
+                                    onmouseover="this.style.color='white'; this.style.backgroundColor='#0c9c73';" 
+                                    onmouseout="this.style.color='#0c9c73'; this.style.backgroundColor='transparent';">
+                                    Signup
+                                </button>
+                            </a>
+                        </div>
+                    </div>                    
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Responsive Search for Small Screens -->
+            <form class="d-md-none mt-2" role="search">
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            </form>
+        </div>
+    </div>
+</header>
+<!-- Header End -->
+
+<!-- Slider start-->
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="2000">
+            <img src="../static/mainslider.jpg" class="d-block w-100" width="550px" height="480px" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="1000">
+            <img src="../static/slider 2.jpg" class="d-block w-100" width="550" height="480px" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="1000">
+            <img src="../static/slider 3.jpg" class="d-block w-100" width="550" height="480px" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="1000">
+            <img src="../static/slider 4.jpg" class="d-block w-100" width="550" height="480px" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<br>
+<!-- Slider end -->
+
+
+    <!-- Blog Grid -->
+<div class="container">
+    <div class="row">
+        <div class="mb-6 col-12">
+           <div class="container">
+    <div class="row">
+        <div class="mb-6 col-12">
+            <h3 style="font-size: 30px; font-weight: bold; color: #0c9c73;
+                       text-transform: uppercase; letter-spacing: 1px;
+                       text-align: center; padding: 15px; display: block;">
+            <a href="{% url 'blog' %}"
+               style="text-decoration: none; color: #0c9c73;">
+                SOME BLOGS
+            </a>
+
+        </h3>
+    </div>
+</div>
+
+</div>
+
+        </div>
+    </div>
+    <br> <br>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for blog in blogs|slice:":10" %}
+        <div class="col">
+            <div class="card shadow-sm h-100" style="border-radius: 15px; transition: transform 0.3s;">
+                {% if blog.image %}
+                <img src="{{ blog.image.url }}" class="card-img-top" alt="Blog Image"
+                    style="height: 200px; object-fit: cover; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <h5 style="color: #0c9c73; font-weight: 700;">{{ blog.title }}</h5>
+                        <p style="font-size: 14px; color: #6c757d;">
+                            By {{ blog.author }} | {{ blog.created_at|date:"F d, Y" }}
+                        </p>
+                        <p style="font-size: 14px; color: #444;">
+                            {% if blog.content|length > 80 %}
+                                {{ blog.content|slice:":80" }}...
+                                <a href="{% url 'blog' %}" onclick="openBlogDetails('{{ blog.id }}')" style="color: #0c9c73;">Read more</a>
+                            {% else %}
+                                {{ blog.content }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="text-end">
+                        <a href="{% url 'blog' %}">
+                            <button class="btn btn-sm" style="background-color: #0c9c73; color: white; border-radius: 20px; font-size: 13px; padding: 6px 14px; border: none;">
+                                Read More
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Modal -->
+        <div id="blogDetails{{ blog.id }}" class="blog-details-modal"
+            style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 600px;
+                max-height: 90vh; overflow-y: auto; z-index: 1050; box-shadow: 0 0 20px rgba(0,0,0,0.3);">
+            <h4 class="text-center" style="color: #0c9c73; font-weight: 700;">{{ blog.title }}</h4>
+
+            {% if blog.image %}
+            <div class="text-center my-3">
+                <img src="{{ blog.image.url }}" class="img-fluid" alt="Blog Image"
+                    style="border-radius: 10px; max-height: 250px; object-fit: cover;">
+            </div>
+            {% endif %}
+
+            <p class="text-muted text-center" style="font-size: 13px;">
+                <strong>By {{ blog.author }} | {{ blog.created_at|date:"F d, Y" }}</strong>
+            </p>
+
+            <p style="font-size: 15px; line-height: 1.6; text-align: justify; color: #444;">{{ blog.content }}</p>
+
+            <div class="d-flex justify-content-between mt-4">
+                <button onclick="closeBlogDetails('{{ blog.id }}')" class="btn btn-outline-danger"
+                    style="border-radius: 20px; font-size: 13px; padding: 5px 15px;">Close</button>
+
+                {% if user.is_superuser %}
+                <form method="post" action="{% url 'delete_blog' blog.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger"
+                        style="border-radius: 20px; font-size: 13px; padding: 5px 15px;">Delete</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Feature Category -->
+
+<!-- Feature Category -->
+
+<!-- Popular product -->
+<div class="container">
+    <div class="row">
+        <div class="mb-6 col-12">
+    <div class="row">
+        <div class="mb-6 col-12">
+            <h3 style="font-size: 30px; font-weight: bold; color: #0c9c73;
+                       text-transform: uppercase; letter-spacing: 1px;
+                       text-align: center; padding: 15px; display: block;">
+
+                <a href="{% url 'viewproduct' %}"
+                   style="text-decoration: none; color: #0c9c73;">
+                    SOME PRODUCT
+                </a>
+
+            </h3>
+        </div>
+    </div>
+        </div>
+    </div>
+    <br> <br>
+    <div class="g-4 row row-cols-lg-5 row-cols-md-3 row-cols-2">
+        {% for i in products|slice:":20" %}
+        <div class="col">
+            <div class="card-product card shadow-sm" style="width: 100%; height: 370px; display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; transition: transform 0.3s ease;">
+                <div class="card-body d-flex flex-column justify-content-between flex-grow-1">
+                    <div class="text-center position-relative">
+                        <a href="#">
+                            <img src="{{ i.img.url }}" alt="{{ i.pname }}" class="mb-3 img-fluid"
+                                style="height: 160px; width: 100%; object-fit: cover; border-radius: 10px;">
+                        </a>
+                    </div>
+    
+                    <div class="text-small mb-1">
+                        <a class="text-decoration-none text-muted" href="#" 
+                            style="color: #6c757d; font-size: 14px;">
+                            <small>{{ i.pid }}</small>
+                            <small>{{ i.category }}</small>
+                        </a>
+                    </div>
+    
+                    <h2 id="namepr{{i.pid}}" class="fs-6" style="font-size: 16px; font-weight: 600; margin-bottom: 5px; color: #333;">
+                        {% if i.pname|wordcount > 50 %}
+                            {{ i.pname|slice:":10"|join:" " }}...
+                        {% else %}
+                            {{ i.pname }}
+                        {% endif %}
+                    </h2>
+    
+                    <p class="card-text" style="font-size: 14px; color: #6c757d; margin-bottom: 10px; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;">
+                        {% if i.description|wordcount > 5 %}
+                            {{ i.description|slice:":10"|join:" " }}... 
+                            <a href="/product/{{i.pid}}" id="qv{{i.pid}}" style="text-decoration: none; color: #0c9c73; font-weight: 500;">Read more</a>
+                        {% else %}
+                            {{ i.description }}
+                        {% endif %}
+                    </p>
+    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div style="font-size: 16px; font-weight: bold; color: #212529;">
+                            Rs. {{ i.price }}
+                        </div>
+                        <div>
+                            <span id="divpr{{i.pid}}" class="divpr">
+                                <button class="btn cart" id="pr{{i.pid}}"
+                                    style="padding: 8px 14px; font-size: 12px; border-radius: 20px; background-color: #0c9c73; color: white; border: 2px solid #0c9c73; transition: 0.3s ease;"
+                                    onmouseover="this.style.backgroundColor='white'; this.style.color='#0c9c73'; this.style.borderColor='#0c9c73';" 
+                                    onmouseout="this.style.backgroundColor='#0c9c73'; this.style.color='white'; this.style.borderColor='#0c9c73';">
+                                    Add to Cart
+                                </button>
+                            </span>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Popular product -->
+{% endblock content %}

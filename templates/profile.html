@@ -1,0 +1,137 @@
+{% block content %}
+<link rel="stylesheet" href="../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+
+{% if messages %}
+  {% for message in messages %}
+  <div style="
+      position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 10px 15px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            z-index: 9999;
+            max-width: 280px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(100%);
+            opacity: 0;
+            animation: slide-in 0.5s ease-in-out forwards;
+            border-left: 5px solid #000;" id="notification-border">
+  ">
+      <div style="display: flex; align-items: center;">
+        <script>
+            document.getElementById('notification-border').style.borderColor = 
+                "{{ message.tags }}" === "error" ? "red" : "green";
+        </script>
+          {% if message.tags == 'error' %}
+            <span style="color: red; font-size: 18px;">❌</span>
+          {% else %}
+            <span style="color: green; font-size: 18px;">✅</span>
+          {% endif %}
+          <p style="margin: 0; color: #333; font-weight: 500;">
+              {{ message }}
+          </p>
+      </div>
+  </div>
+  {% endfor %}
+
+  <style>
+    @keyframes slide-in {
+      0% {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fade-out {
+      0% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 0.5;
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+    }
+  </style>
+{% endif %}
+
+
+<div style="background-size: cover; height: 100%; display:flex; justify-content:center; align-items:center; background-image: url(../static/profile_background.jpg); background-size:1550px 750px">
+    <form action="{% url 'profile_update' %}" 
+        style="width: 420px; background: rgba(255, 255, 255, 0.9); padding: 30px; border-radius: 20px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); position: fixed; right: 200px;" 
+        method="post">
+        
+        {% csrf_token %}
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="../static/website_logo-removebg-preview.png" alt="Logo" style="height: 100px; width: 100px;">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" style="font-style: oblique; font-weight: 500;">First Name:</label>
+            <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" style="font-style: oblique; font-weight: 500;">Last Name:</label>
+            <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" style="font-style: oblique; font-weight: 500;">UserName:</label>
+            <input type="text" name="username" class="form-control" value="{{ user.username }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" style="font-style: oblique; font-weight: 500;">Email address:</label>
+            <input type="text" name="email" class="form-control" value="{{ user.email }}">
+        </div>
+
+        <div style="display: flex; justify-content: space-between; gap: 10px;">
+            <button type="submit" class="btn btn-outline-success" 
+                style="color: #0c9c73; border-color: #0c9c73; border-radius: 25px; padding: 10px 20px; transition: 0.3s ease;" 
+                onmouseover="this.style.color='white'; this.style.backgroundColor='#0c9c73';" 
+                onmouseout="this.style.color='#0c9c73'; this.style.backgroundColor='transparent';">
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"></path>
+                </svg>
+                Update
+            </button>
+
+            <a href="{% url 'logout1' %}" class="btn btn-outline-success" 
+                style="color: #0c9c73; border-color: #0c9c73; border-radius: 25px; padding: 10px 20px; transition: 0.3s ease;" 
+                onmouseover="this.style.color='white'; this.style.backgroundColor='#0c9c73';" 
+                onmouseout="this.style.color='#0c9c73'; this.style.backgroundColor='transparent';">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"></path>
+                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"></path>
+                </svg>
+                Logout
+            </a>
+
+            <a href="{% url 'index' %}" class="btn btn-outline-success" 
+                style="color: #0c9c73; border-color: #0c9c73; border-radius: 25px; padding: 10px 20px; transition: 0.3s ease;" 
+                onmouseover="this.style.color='white'; this.style.backgroundColor='#0c9c73';" 
+                onmouseout="this.style.color='#0c9c73'; this.style.backgroundColor='transparent';">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"></path>
+                </svg>
+                Back
+            </a>
+        </div>
+    </form>
+</div>
+
+<script src="../static/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
+{% endblock content %}

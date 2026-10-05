@@ -1,0 +1,80 @@
+{% extends 'headerfooter.html' %}
+
+{% block content %}
+<style>
+    .modal-lg { max-width: 90%; } /* Larger modal on bigger screens */
+    .message-box {
+        max-height: 300px; /* Prevents too long messages from making modal huge */
+        overflow-y: auto;  /* Enables scrolling */
+        word-wrap: break-word; /* Breaks long words properly */
+        white-space: pre-wrap; /* Keeps message formatting */
+    }
+</style>
+<div class="container mt-4">
+    <h2>Manage Feedback</h2>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for feedback in feedbacks %}
+            <tr>
+                <td>{{ feedback.id }}</td>
+                <td>{{ feedback.name }}</td>
+                <td>{{ feedback.email }}</td>
+                <td>{{ feedback.contact }}</td>
+                <td>{{ feedback.subject }}</td>
+                <td>
+                    {{ feedback.message|slice:":10" }}{% if feedback.message|length > 10 %}...{% endif %}
+                    <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewMessageModal{{ feedback.id }}">View</button>
+                </td>
+                <td>
+                    <a href="{% url 'deletefeedback' feedback.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+
+           <!-- Modal for Viewing Full Message -->
+            <div class="modal fade" id="viewMessageModal{{ feedback.id }}" tabindex="-1" aria-labelledby="viewMessageModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered"> 
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="viewMessageModalLabel">Full Message</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <strong>From:</strong> {{ feedback.name }} ({{ feedback.email }})<br>
+                            <strong>Contact:</strong> {{ feedback.contact }}<br>
+                            <strong>Subject:</strong> {{ feedback.subject }}<br>
+                            <strong>Message:</strong><br>
+                            <div class="message-box">
+                                <p>{{ feedback.message }}</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No feedback available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS for modal functionality -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

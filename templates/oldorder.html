@@ -1,0 +1,46 @@
+{% extends "headerfooter.html" %}
+{% block content %}
+
+<div class="mx-4">
+    <h3 class="text-center text-uppercase" style="color: #0c9c73;">Old Orders</h3>
+</div>
+
+<div class="mx-4 mt-4">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Order ID</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in old_orders %}
+                <tr>
+                    <th scope="row">{{ order.order_id }}</th>
+                    <td>{{ order.name }}</td>
+                    <td>{{ order.email }}</td>
+                    <td>{{ order.phone }}</td>
+                    <td>Rs. {{ order.amount }}</td>
+                    <td>{{ order.date }}</td>
+                    <td>{{ order.status }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="text-center mt-4">
+    <a href="{% url 'manageorder' %}"><button type="button" class="btn btn-outline-success" onclick="openForm()"
+        style="color: #0c9c73; border-color: #0c9c73; border-radius: 25px; padding: 10px 20px; transition: all 0.3s ease;"
+        onmouseover="this.style.color='white'; this.style.backgroundColor='#0c9c73';"
+        onmouseout="this.style.color='#0c9c73'; this.style.backgroundColor='transparent';">
+        Back To Active Orders
+    </button></a>
+</div>
+
+{% endblock content %}

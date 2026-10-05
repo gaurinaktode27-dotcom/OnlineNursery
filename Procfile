@@ -1,0 +1,1 @@
+web: gunicorn OnlineNursery.wsgi:application --log-level debug --access-logfile - --error-logfile - --capture-output --enable-stdio-inheritance 

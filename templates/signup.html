@@ -1,0 +1,85 @@
+{% block content %}
+<link rel="stylesheet" href="../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+
+{% if messages %}
+    {% for message in messages %}
+        <div style="
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 10px 15px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            z-index: 9999;
+            max-width: 280px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(100%);
+            opacity: 0;
+            animation: slide-in 0.5s ease-in-out forwards;
+            border-left: 5px solid red;">
+            <div style="display: flex; align-items: center;">
+                <span style="font-size: 18px;">
+                    {% if message.tags == 'success' %}
+                        ✅
+                    {% else %}
+                        ❌
+                    {% endif %}
+                </span>
+                <p style="margin: 0; color: #333; font-weight: 500;">
+                    {{ message }}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+
+    <style>
+      @keyframes slide-in {
+        0% {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    </style>
+{% endif %}
+
+<div style="height: 100vh; display: flex; justify-content: center; align-items: center; background-image: url(../static/Signup.jpg); background-size: cover;">
+    <form action="{% url 'signup' %}" method="post" style="width: 400px; padding: 40px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); border-radius: 15px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); text-align: center;">
+        {% csrf_token %}
+        <h2 style="color: white; font-weight: bold; margin-bottom: 20px;">Sign Up</h2>
+        <div class="mb-3">
+            <input type="text" name="firstname" placeholder="First Name" class="form-control" style="border-radius: 25px; padding: 12px; text-align: center; font-size: 16px;">
+        </div>
+        <div class="mb-3">
+            <input type="text" name="lastname" placeholder="Last Name" class="form-control" style="border-radius: 25px; padding: 12px; text-align: center; font-size: 16px;">
+        </div>
+        <div class="mb-3">
+            <input type="email" name="email" placeholder="Email Address" class="form-control" style="border-radius: 25px; padding: 12px; text-align: center; font-size: 16px;">
+        </div>
+        <div class="mb-3">
+            <input type="text" name="userid" placeholder="User ID" class="form-control" style="border-radius: 25px; padding: 12px; text-align: center; font-size: 16px;">
+        </div>
+        <div class="mb-3">
+            <input type="password" name="password" placeholder="Password" class="form-control" style="border-radius: 25px; padding: 12px; text-align: center; font-size: 16px;" requied>
+        </div>
+        <div>
+            <button type="submit" class="btn" style="width: 100%; padding: 12px; border-radius: 25px; font-size: 18px; font-weight: bold; background: linear-gradient(135deg, #0c9c73, #1abc9c); color: white; border: none; transition: 0.3s; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);" 
+            onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0px 6px 15px rgba(0, 0, 0, 0.4)';" 
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0px 4px 10px rgba(0, 0, 0, 0.3)';">
+            Sign Up</button>
+            <a href="{% url 'index' %}" class="btn btn-outline-light" style="width: 100%; margin-top: 15px; padding: 12px; border-radius: 25px; font-size: 18px; font-weight: bold;">Back</a>
+        </div>
+    </form>
+</div>
+
+<script src="../static/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
+
+{% endblock content %}
